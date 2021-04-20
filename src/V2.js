@@ -49,13 +49,7 @@ const V2 = (props) => {
         {
             yAddText="ani";
         }
-        var hours;
-        if(date1_UTC.getHours()>date2_UTC.getHours()){
-            hours=date1_UTC.getHours()-date2_UTC.getHours();
-        }else{
-            hours=date2_UTC.getHours()-date1_UTC.getHours();
-        }
-        return years + yAddText+ ", " + months + mAddText+", " + days + dAddText + ", ore " +hours;
+        return years +" " +yAddText+ ", " + months +" " +mAddText+", " + days + " " + dAddText;
     }
 
     const V2_1a =()=>{

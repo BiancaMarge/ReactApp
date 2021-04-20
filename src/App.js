@@ -8,42 +8,40 @@ import Age from './Age';
 import V2 from './V2';
 registerLocale('ro', ro)
 
-function App(props) {
+function App() {
   const[selectedDate1, setSelectedDate1]=useState(new Date());
   const[selectedDate2, setSelectedDate2]=useState(new Date());
-  var currentDate=new Date();
   var[dataUTC, setdataUTC]=useState();
   var[unixtimestamp,setunixtimestamp]=useState();
   var[dataEngl,setdataEngl]=useState();
   var[dataRo, setdataRo]=useState();
-  var[ok, setOk]=useState(false);
+  var[okVisibleUTSFunc, setOkVisibleUTSFunc]=useState(false);
   var[locale, setLocale]=useState("ro");
 
-  //transformati inputul primit in utc si afisati-l in unix timestamp
   const UnixTimeStampFunc = () => {
 
-    //trasnformat in utc
     const utcDate = new Date(Date.UTC(selectedDate1.getFullYear(), selectedDate1.getMonth(),selectedDate1.getDate(), selectedDate1.getHours(),selectedDate1.getMinutes(),selectedDate1.getSeconds()));
     setdataUTC(utcDate.toUTCString());
     
-    //afisati-l in unix timestamp
-    setunixtimestamp(selectedDate1.getTime()); //milliseconds
+    setunixtimestamp(selectedDate1.getTime());
 
-    //in engleza
     const formattedDateEngl = Intl.DateTimeFormat('en-US',{
       year: 'numeric',
       month: 'long',
-      day: '2-digit' }).format(selectedDate1);
+      day: '2-digit',
+      hour:'2-digit',
+      minute:'2-digit'}).format(selectedDate1);
       setdataEngl(formattedDateEngl);
 
-    //in romana
     const formattedDateRo = Intl.DateTimeFormat('ro-RO',{
       year: 'numeric',
       month: 'long',
-      day: '2-digit' }).format(utcDate);
+      day: '2-digit',
+      hour:'2-digit',
+      minute:'2-digit'}).format(selectedDate1);
       setdataRo(formattedDateRo);
 
-    setOk(true);
+    setOkVisibleUTSFunc(true);
   }
 
   const ChangeLocal = ()=>{
@@ -54,37 +52,44 @@ function App(props) {
     }
   }
 
-  //-------------------------------------------------------------------------
-  //V3
-  const[okV3, setOkV3]=useState(false);
-  const [dayNo, setDayNo] = useState();
+  const[okVisiblenoDayV3, setOkVisiblenoDayV3]=useState(false);
+  const [inputDayNoV3, setinputDayNoV3] = useState();
+  const [inputHoursNoV3, setinputHoursNoV3] = useState();
 
-  function getData(event){
-    setDayNo(event.target.value);
-    setOkV3(false);
+  function getDataDays(event){
+      setinputDayNoV3(event.target.value);
+      setOkVisiblenoDayV3(false);
   }
-
-  function getFeedback(){
-      var s = new String(dayNo);
-      if(dayNo<0){
-          window.alert("Trebuie sa introduci o valoare pozitiva")
-      }else{
-          if(!dayNo){
-              window.alert("Trebuie sa introduci o valoare")
-          }else{
-              if(s.charAt(0)==="0"){
-                  window.alert("Numarul nu trebuie sa inceapa cu 0");
-              }else{
-                  setOkV3(true)
-              }}}}
+  function getDataHours(event){
+    setinputHoursNoV3(event.target.value);
+    setOkVisiblenoDayV3(false);
+}
 
   function transformData(){
-      //console.log(selectedDate1.getTime());
+    var s = new String(inputDayNoV3);
+        if(inputDayNoV3<0){
+        window.alert("Trebuie sa introduci o valoare pozitiva")
+    }else{
+        if(!inputDayNoV3){
+            window.alert("Trebuie sa introduci o valoare")
+        }else{
+            if(s.charAt(0)==="0"){
+                window.alert("Numarul nu trebuie sa inceapa cu 0");
+            }else{
+              let x = Number(inputDayNoV3);
+              if(!Number.isInteger(x)){
+                window.alert("Trebuie sa introduci un numar natural");
+              }else{
+                setOkVisiblenoDayV3(true)
+              }
+            }
+          }
+        }
       var auxDate1=selectedDate1.getTime();
-      var auxdayNo=dayNo*86400000;
-      var auxDate2=auxDate1+auxdayNo;
-      var x=new Date(auxDate2);
-      setSelectedDate2(x);
+      var auxinputDayNoV3=inputDayNoV3*86400000;
+      var auxDate2=auxDate1+auxinputDayNoV3;
+      var newDate=new Date(auxDate2);
+      setSelectedDate2(newDate);
   }
 
 
@@ -102,10 +107,12 @@ function App(props) {
                     <DatePicker
                       selected={selectedDate1}
                       onChange={setSelectedDate1}
-                      maxDate={currentDate}
-                      dateFormat="dd-MM-yyyy"
+                      showTimeSelect
+                      timeIntervals={5}
+                      timeFormat="HH:mm"
+                      timeCaption="Time"
+                      dateFormat="dd-MM-yyyy h:mm aa"
                       locale={locale}
-                      //date.toLocaleTimeString()
                     />
                     </td>
 
@@ -113,8 +120,11 @@ function App(props) {
                       <DatePicker
                         selected={selectedDate2}
                         onChange={setSelectedDate2}
-                        maxDate={currentDate}
-                        dateFormat="dd-MM-yyyy"
+                        showTimeSelect
+                        timeIntervals={5}
+                        timeFormat="HH:mm"
+                        timeCaption="Time"
+                        dateFormat="dd-MM-yyyy h:mm aa"
                         locale={locale}
                       />
                     </td>
@@ -123,7 +133,6 @@ function App(props) {
             </div>
           
             <div className="PrintAge">
-              {/*afisati varsta si daca are peste 18 ani*/}
                 <Age selectedDate={selectedDate1}/>
             </div>
           
@@ -133,7 +142,7 @@ function App(props) {
             <div className="btnStyle">
               <button onClick={UnixTimeStampFunc}>Detalii data</button>
             </div>
-              <div> {ok && <div> <p>Data selectata transformata in utc: {dataUTC}</p> 
+              <div> {okVisibleUTSFunc && <div> <p>Data selectata transformata in utc: {dataUTC}</p> 
                                 <p>Data selectata afista in unix timestamp: {unixtimestamp}</p>
                                 <p>Data selectata afista in limba engleza: {dataEngl}</p>
                                 <p>Data selectata afista in limba romana: {dataRo}</p></div>}
@@ -142,7 +151,6 @@ function App(props) {
           </td>
           <td className="flex-container">
             <div>
-              {/*V2*/}
               <h2>V2</h2>
               <V2 sd1={selectedDate1} sd2={selectedDate2}/>
             </div>
@@ -154,12 +162,13 @@ function App(props) {
               <div>
                 <form>
                   <label>Introduceti un numar de zile:  
-                    <input type="number" onChange={getData}/> 
+                    <input type="number" onChange={getDataDays}/> 
+                    Introduceti un numar de ore:
+                    <input type="number" onChange={getDataHours}/>
                   </label>
                 </form>
-                <button onClick={getFeedback}>Submit</button>
-                <div>{ okV3? <p>Ati introdus {dayNo} zile</p> : null }</div>
 
+                <div>{ okVisiblenoDayV3? <p>Ati introdus {inputDayNoV3} zile</p> : null }</div>
                 <button onClick={transformData}>Preselectie</button>
               </div>
             </div>

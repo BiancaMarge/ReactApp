@@ -17,20 +17,23 @@ function App() {
   var[dataRo, setdataRo]=useState();
   var[okVisibleUTSFunc, setOkVisibleUTSFunc]=useState(false);
   var[locale, setLocale]=useState("ro");
+  var[timeCaption, setTimeCaption]=useState("Timp");
+  var[dateFormat, setdateFormat]=useState("dd-MM-yyyy HH:mm");
 
   const UnixTimeStampFunc = () => {
 
-    const utcDate = new Date(Date.UTC(selectedDate1.getFullYear(), selectedDate1.getMonth(),selectedDate1.getDate(), selectedDate1.getHours(),selectedDate1.getMinutes(),selectedDate1.getSeconds()));
-    setdataUTC(utcDate.toUTCString());
+    const utcDate =selectedDate1.getUTCFullYear()+ "/"+selectedDate1.getUTCMonth()+ "/"+selectedDate1.getUTCDate()+ " "+ selectedDate1.getUTCHours()+ ":"+selectedDate1.getUTCMinutes()+ ":"+selectedDate1.getUTCSeconds();
+    const utcDate2 =new Date(selectedDate1.getUTCFullYear(),selectedDate1.getUTCMonth(),selectedDate1.getUTCDate(), selectedDate1.getUTCHours(),selectedDate1.getUTCMinutes(),selectedDate1.getUTCSeconds());
+    setdataUTC(utcDate);
     
-    setunixtimestamp(selectedDate1.getTime());
+    setunixtimestamp(utcDate2.getTime());
 
     const formattedDateEngl = Intl.DateTimeFormat('en-US',{
       year: 'numeric',
       month: 'long',
       day: '2-digit',
       hour:'2-digit',
-      minute:'2-digit'}).format(selectedDate1);
+      minute:'2-digit'}).format(utcDate2);
       setdataEngl(formattedDateEngl);
 
     const formattedDateRo = Intl.DateTimeFormat('ro-RO',{
@@ -38,7 +41,7 @@ function App() {
       month: 'long',
       day: '2-digit',
       hour:'2-digit',
-      minute:'2-digit'}).format(selectedDate1);
+      minute:'2-digit'}).format(utcDate2);
       setdataRo(formattedDateRo);
 
     setOkVisibleUTSFunc(true);
@@ -50,12 +53,28 @@ function App() {
     }else{
       setLocale("ro");
     }
+
+    if(timeCaption==="Timp"){
+      setTimeCaption("Time");
+    }else{
+      setTimeCaption("Timp");
+    }
+
+    if(dateFormat==="dd-MM-yyyy HH:mm"){
+      setdateFormat("dd-MM-yyyy h:mm aa");
+    }else{
+      setdateFormat("dd-MM-yyyy HH:mm");
+    }
   }
 
   const[okVisiblenoDayV3, setOkVisiblenoDayV3]=useState(false);
   const [inputDayNoV3, setinputDayNoV3] = useState();
   const [inputHoursNoV3, setinputHourV3] = useState();
   const [inputMinNoV3, setinputMinV3] = useState();
+
+  var [hAddText, sethAddText]=useState("ora");
+  var [mAddText, setmAddText ]=useState("minut");
+  var [dAddText, setdAddText]=useState("zi");
 
   function transformData(){
     var sD = new String(inputDayNoV3);
@@ -81,6 +100,18 @@ function App() {
             }
           }
         }
+        if(inputDayNoV3!==1)
+        {
+          setdAddText("zile");
+        }
+        if(inputHoursNoV3!==1)
+        {
+          sethAddText("ore");
+        }
+        if(inputMinNoV3!==1)
+        {
+          setmAddText("minute");
+        }
       var auxDate1=selectedDate1.getTime();
       var auxinputDayNoV3=inputDayNoV3*86400000+inputHoursNoV3*3600000+inputMinNoV3*60000;
       var auxDate2=auxDate1+auxinputDayNoV3;
@@ -95,7 +126,7 @@ function App() {
         <tr>
           <td className="flex-container">
             <h2>V1</h2>
-            <h5>Selectati data nasterii</h5>
+            <h5 className="text-alaignV1">Selectati data nasterii din primul datetime picker</h5>
             <div className="App">
               <table>
                   <tr>
@@ -106,8 +137,8 @@ function App() {
                       showTimeSelect
                       timeIntervals={5}
                       timeFormat="HH:mm"
-                      timeCaption="Time"
-                      dateFormat="dd-MM-yyyy h:mm aa"
+                      timeCaption={timeCaption}
+                      dateFormat={dateFormat}
                       locale={locale}
                     />
                     </td>
@@ -119,8 +150,8 @@ function App() {
                         showTimeSelect
                         timeIntervals={5}
                         timeFormat="HH:mm"
-                        timeCaption="Time"
-                        dateFormat="dd-MM-yyyy h:mm aa"
+                        timeCaption={timeCaption}
+                        dateFormat={dateFormat}
                         locale={locale}
                       />
                     </td>
@@ -166,7 +197,7 @@ function App() {
                   </label>
                 </form>
 
-                <div>{ okVisiblenoDayV3? <p>Ati introdus {inputDayNoV3} zile, {inputHoursNoV3} ore, {inputMinNoV3} minute</p> : null }</div>
+                <div>{ okVisiblenoDayV3? <p>Ati introdus {inputDayNoV3} {dAddText}, {inputHoursNoV3} {hAddText}, {inputMinNoV3} {mAddText}</p> : null }</div>
                 <button onClick={transformData}>Preselectie</button>
               </div>
             </div>

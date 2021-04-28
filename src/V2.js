@@ -37,15 +37,15 @@ const V2 = (props) => {
 
         var years = date2_UTC.getFullYear() - date1_UTC.getFullYear();
 
-        if(days>1)
+        if(days!==1)
         {
             dAddText="zile";
         }
-        if(months>1)
+        if(months!==1)
         {
             mAddText="luni";
         }
-        if(years>1)
+        if(years!==1)
         {
             yAddText="ani";
         }

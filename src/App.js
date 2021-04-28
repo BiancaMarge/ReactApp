@@ -170,9 +170,9 @@ function App() {
               <button onClick={UnixTimeStampFunc}>Detalii data</button>
             </div>
               <div> {okVisibleUTSFunc && <div> <p>Data selectata transformata in utc: {dataUTC}</p> 
-                                <p>Data selectata afista in unix timestamp: {unixtimestamp}</p>
-                                <p>Data selectata afista in limba engleza: {dataEngl}</p>
-                                <p>Data selectata afista in limba romana: {dataRo}</p></div>}
+                                <p>Data selectata, transformata in UTC si afista in unix timestamp: {unixtimestamp}</p>
+                                <p>Data selectata, transformata in UTC si afista in limba engleza: {dataEngl}</p>
+                                <p>Data selectata, transformata in UTC si afista in limba romana: {dataRo}</p></div>}
                 
               </div>
           </td>
@@ -188,12 +188,14 @@ function App() {
               <h2>V3</h2>
               <div>
                 <form>
-                  <label>Introduceti un numar de zile:  
-                    <input type="number" onChange={event => setinputDayNoV3(event.target.value)}/> 
+                  <label><div>Introduceti un numar de zile:  
+                    <input type="number" onChange={event => setinputDayNoV3(event.target.value)}/> </div>
+                    <div>
                     Introduceti un numar de ore:
-                    <input onChange={event => setinputHourV3(event.target.value)}/>
+                    <input onChange={event => setinputHourV3(event.target.value)}/></div>
+                    <div>
                     Introduceti un numar de minute:
-                    <input onChange={event => setinputMinV3(event.target.value)}/>
+                    <input onChange={event => setinputMinV3(event.target.value)}/></div>
                   </label>
                 </form>
 

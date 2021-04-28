@@ -36,6 +36,7 @@ const V2 = (props) => {
         }
 
         var years = date2_UTC.getFullYear() - date1_UTC.getFullYear();
+        let display_interval="";
 
         if(days!==1)
         {
@@ -49,7 +50,21 @@ const V2 = (props) => {
         {
             yAddText="ani";
         }
-        return years +" " +yAddText+ ", " + months +" " +mAddText+", " + days + " " + dAddText;
+        if(years!==0){
+            display_interval=display_interval+" "+years+" "+ yAddText;
+        }
+        if(months!==0){
+            display_interval=display_interval+" "+months+" "+ mAddText;
+        }
+        if(days!==0){
+            display_interval=display_interval+" "+days+" "+ dAddText;
+        }
+
+        if(display_interval===""){
+            return "Datele sunt identice";
+        }else{
+            return display_interval;
+        }
     }
 
     const V2_1a =()=>{

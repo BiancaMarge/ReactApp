@@ -71,10 +71,9 @@ function App() {
   const [inputDayNoV3, setinputDayNoV3] = useState();
   const [inputHoursNoV3, setinputHourV3] = useState();
   const [inputMinNoV3, setinputMinV3] = useState();
+  const [display_inputs, setDisplay_inputs]=useState();
 
-  var [hAddText, sethAddText]=useState("ora");
-  var [mAddText, setmAddText ]=useState("minut");
-  var [dAddText, setdAddText]=useState("zi");
+  var printMinute="minut", printHour="ora", printDay="zi";
 
   function transformData(){
     var sD = new String(inputDayNoV3);
@@ -89,9 +88,9 @@ function App() {
             if(sD.charAt(0)==="0" || sH.charAt(0)==="0" || sM.charAt(0)==="0"){
                 window.alert("Numarul nu trebuie sa inceapa cu 0");
             }else{
-              let xD = Number(inputDayNoV3);
-              let xH = Number(inputHoursNoV3);
-              let xM = Number(inputMinNoV3);
+              var xD = Number(inputDayNoV3);
+              var xH = Number(inputHoursNoV3);
+              var xM = Number(inputMinNoV3);
               if(!Number.isInteger(xD) || !Number.isInteger(xH) || !Number.isInteger(xM)){
                 window.alert("Trebuie sa introduci un numar natural");
               }else{
@@ -100,18 +99,26 @@ function App() {
             }
           }
         }
-        if(inputDayNoV3!==1)
-        {
-          setdAddText("zile");
+
+        if(xM===1){
+          printMinute="minut";
+        }else{
+          printMinute="minute";
         }
-        if(inputHoursNoV3!==1)
-        {
-          sethAddText("ore");
+    
+        if(xH===1){
+          printHour="ora";
+        }else{
+          printHour="ore";
         }
-        if(inputMinNoV3!==1)
-        {
-          setmAddText("minute");
+    
+        if(xD===1){
+          printDay="zi";
+        }else{
+          printDay="zile";
         }
+        setDisplay_inputs(inputDayNoV3+" "+printDay+" "+inputHoursNoV3+" "+printHour +" "+inputMinNoV3 +" "+printMinute);
+       
       var auxDate1=selectedDate1.getTime();
       var auxinputDayNoV3=inputDayNoV3*86400000+inputHoursNoV3*3600000+inputMinNoV3*60000;
       var auxDate2=auxDate1+auxinputDayNoV3;
@@ -199,8 +206,8 @@ function App() {
                   </label>
                 </form>
 
-                <div>{ okVisiblenoDayV3? <p>Ati introdus {inputDayNoV3} {dAddText}, {inputHoursNoV3} {hAddText}, {inputMinNoV3} {mAddText}</p> : null }</div>
                 <button onClick={transformData}>Preselectie</button>
+                <div>{ okVisiblenoDayV3 && <p>Ati introdus {display_inputs}</p>} </div>
               </div>
             </div>
           </td>

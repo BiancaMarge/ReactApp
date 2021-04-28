@@ -12,9 +12,7 @@ const Age = (props) => {
   var[okVisibleAge,setOkVisibleAge]=useState(false);
   var [printAge, setPrintAge]=useState(" ");
 
-  var [printYear, setPrintYear]=useState();
-  var [printMonth, setPrintMonth]=useState();
-  var [printDay, setPrintDay]=useState();  
+  var printYear, printMonth, printDay;
 
   const Varsta = () => {
     var afisVarsta=" ";
@@ -34,22 +32,22 @@ const Age = (props) => {
     var luni=new_Date.getMonth();
     var zile=new_Date.getDate();
     
-    if(ani===1){
-      setPrintYear("an");
+    if(ani!==1){
+      printYear="ani";
     }else{
-      setPrintYear("ani");
+      printYear="an";
     }
 
-    if(luni===1){
-      setPrintMonth("luna");
+    if(luni!==1){
+      printMonth="luni";
     }else{
-      setPrintMonth("luni");
+      printMonth="luna";
     }
 
-    if(zile===1){
-      setPrintDay("zi");
+    if(zile!==1){
+      printDay="zile";
     }else{
-      setPrintDay("zile");
+      printDay="zi";
     }
     afisVarsta="Varsta este: "
     if(data.getFullYear()>currentDate.getFullYear() || 
@@ -71,6 +69,7 @@ const Age = (props) => {
       }
     }
     setSelectedYear(ani);
+    console.log(afisVarsta);
     setPrintAge(afisVarsta);
     setOkVisibleAge(true);
   }
@@ -116,7 +115,7 @@ const Age = (props) => {
         <button onClick={Varsta}>Varsta</button>
         {okVisibleAge===false ?
         <div><ReactPlaceholder rows={1} color="white" type='text' style={{width:250, height: 80, marginTop:20, marginLeft:150}}>
-          <p style='color:gray'> Apasati butonul varsta de mai sus pentru a va afla varsta</p>
+          <p style="color:gray"> Apasati butonul varsta de mai sus pentru a va afla varsta</p>
         </ReactPlaceholder>
         </div> : <p> {printAge}</p>}
       </div>

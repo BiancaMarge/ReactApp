@@ -91,8 +91,7 @@ const V2 = (props) => {
     return (
         <div className="App">
             <button onClick={V2_1a}>Afiseaza intervalul de timp</button>
-            {visibleV2a && (data1!==null && data2!==null)? <div>
-                <p>Intervalul intre date1 si date2 este</p>
+            {visibleV2a && (data1!==null && data2!==null) ? <div>
                 <p>{getIntervalBetweenDates(data1,data2)}</p>
             </div>:<p></p>}
 

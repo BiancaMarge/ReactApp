@@ -11,12 +11,12 @@ const Age = (props) => {
   var currentDate=new Date();
   var[okVisibleAge,setOkVisibleAge]=useState(false);
   var [printAge, setPrintAge]=useState(" ");
+  var[printNullData1,setPrintNullData1]=useState("Apasati butonul varsta de mai sus pentru a va afla varsta");
 
   var printYear, printMonth, printDay;
 
   const Varsta = () => {
     if(data!=null){
-
     var afisVarsta=" ";
     var new_Date=new Date();
     new_Date.setMilliseconds(0);
@@ -74,6 +74,8 @@ const Age = (props) => {
     console.log(afisVarsta);
     setPrintAge(afisVarsta);
     setOkVisibleAge(true);
+  }else{
+    setPrintNullData1("Selectati o data din prima casuta");
   }
 }
 
@@ -106,7 +108,7 @@ const Age = (props) => {
         setModalData("Ai peste 18 ani");
       }
       setOkVisibleAge(true);
-    }
+    } //style={{width:250, height: 80, marginTop:20, marginLeft:150}}
   }
 
   function closeModal(){
@@ -118,8 +120,8 @@ const Age = (props) => {
       <div >
         <button onClick={Varsta}>Varsta</button>
         {okVisibleAge===false ?
-        <div><ReactPlaceholder rows={1} type='text' style={{width:250, height: 80, marginTop:20, marginLeft:150}}>
-          <p style="color:black"> Apasati butonul varsta de mai sus pentru a va afla varsta</p>
+        <div><ReactPlaceholder color="black" ready={true} rows={1} type='text' style={{width:250, height: 80, marginTop:20, marginLeft:150}}> 
+          <p> {printNullData1}</p>
         </ReactPlaceholder>
         </div> : <p> {printAge}</p>}
       </div>

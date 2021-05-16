@@ -19,6 +19,7 @@ function App() {
   var[locale, setLocale]=useState("ro");
   var[timeCaption, setTimeCaption]=useState("Timp");
   var[dateFormat, setdateFormat]=useState("dd-MM-yyyy HH:mm");
+  var[printNullDateForDetailData,setPrintNullDateForDetailData]=useState("");
 
   const UnixTimeStampFunc = () => {
     if(selectedDate1!=null){
@@ -46,6 +47,8 @@ function App() {
       setdataRo(formattedDateRo);
 
     setOkVisibleUTSFunc(true);
+    }else{
+      setPrintNullDateForDetailData("Selectati o data din prima casuta");
     }
   }
 
@@ -144,7 +147,7 @@ function App() {
       printMinute="";
     }
 
-    if(ok==0){
+    if(ok===0){
       setDisplay_inputs(inputDayNoV3+" "+printDay+" "+inputHoursNoV3+" "+printHour +" "+inputMinNoV3 +" "+printMinute);
       var auxDate1=selectedDate1.getTime();
       var auxinputDayNoV3=inputDayNoV3*86400000+inputHoursNoV3*3600000+inputMinNoV3*60000;
@@ -204,10 +207,13 @@ function App() {
             <div className="btnStyle">
               <button onClick={UnixTimeStampFunc}>Detalii data</button>
             </div>
-              <div> {okVisibleUTSFunc && <div> <p>Data selectata transformata in utc: {dataUTC}</p> 
-                                <p>Data selectata, transformata in UTC si afista in unix timestamp: {unixtimestamp}</p>
-                                <p>Data selectata, transformata in UTC si afista in limba engleza: {dataEngl}</p>
-                                <p>Data selectata, transformata in UTC si afista in limba romana: {dataRo}</p></div>}
+              <div> {okVisibleUTSFunc && (selectedDate1!==null) ? 
+                                <div> <p>Data selectata transformata in utc: {dataUTC}</p> 
+                                      <p>Data selectata, transformata in UTC si afista in unix timestamp: {unixtimestamp}</p>
+                                      <p>Data selectata, transformata in UTC si afista in limba engleza: {dataEngl}</p>
+                                      <p>Data selectata, transformata in UTC si afista in limba romana: {dataRo}</p>
+                                </div>
+                                : printNullDateForDetailData}
                 
               </div>
           </td>

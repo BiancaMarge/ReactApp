@@ -6,6 +6,7 @@ import { registerLocale } from "react-datepicker";
 import ro from 'date-fns/locale/ro';
 import Age from './Age';
 import V2 from './V2';
+import Modal from 'react-modal';
 registerLocale('ro', ro)
 
 function App() {
@@ -20,6 +21,23 @@ function App() {
   var[timeCaption, setTimeCaption]=useState("Timp");
   var[dateFormat, setdateFormat]=useState("dd-MM-yyyy HH:mm");
   var[printNullDateForDetailData,setPrintNullDateForDetailData]=useState("");
+  var[erorInputNumber,setErorInputNumber]=useState(" ");
+
+  //Modal
+  const customStyles = {
+    content : {
+      top : '50%',
+      left : '50%',
+      right : 'auto',
+      bottom : 'auto',
+      marginRight : '-50%',
+      transform  : 'translate(-50%, -50%)'
+    }
+  };
+  const [modalIsOpen,setIsOpen] = useState(false);
+  function closeModal(){
+    setIsOpen(false);
+  }
 
   const UnixTimeStampFunc = () => {
     if(selectedDate1!=null){
@@ -98,22 +116,26 @@ function App() {
       var sM = new String(inputMinNoV3);
     }
     if(inputDayNoV3<0 || inputHoursNoV3<0 || inputMinNoV3<0){
-        window.alert("Trebuie sa introduci o valoare pozitiva")
+      setErorInputNumber("Trebuie sa introduci o valoare pozitiva");
+      setIsOpen(true);
         ok++;
     }else{
       if((sD.charAt(0)==="0" && toString(sD).length>1) || (sH.charAt(0)==="0" && toString(sH).length>1) || (sM.charAt(0)==="0" && toString(sM).length>1)){
-                window.alert("Numarul nu trebuie sa inceapa cu 0");
-                ok++;
+        setErorInputNumber("Numarul nu trebuie sa inceapa cu 0");
+        setIsOpen(true);
+          ok++;
       }else{
         var xD = Number(sD);
         var xH = Number(sH);
         var xM = Number(sM);
         console.log(xH);
         if((!Number.isInteger(xD) && xD!==0) || (!Number.isInteger(xH) && xH!==0)|| (!Number.isInteger(xM) && xM!==0)){
-          window.alert("Trebuie sa introduci un numar natural");
+          setErorInputNumber("Trebuie sa introduci un numar natural");
+          setIsOpen(true);
           ok++;
         }else{
             setOkVisiblenoDayV3(true)
+            setErorInputNumber(" ");
             ok=0;
           }
       }
@@ -230,17 +252,25 @@ function App() {
               <div>
                 <form>
                   <label><div>Introduceti un numar de zile:  
-                    <input type="number" onChange={event => setinputDayNoV3(event.target.value)}/> </div>
+                    <input type="text" maxlength="5" onChange={event => setinputDayNoV3(event.target.value)}/> </div>
                     <div>
                     Introduceti un numar de ore:
-                    <input onChange={event => setinputHourV3(event.target.value)}/></div>
+                    <input type="text" maxlength="5" onChange={event => setinputHourV3(event.target.value)}/></div>
                     <div>
                     Introduceti un numar de minute:
-                    <input onChange={event => setinputMinV3(event.target.value)}/></div>
+                    <input type="text" maxlength="5" onChange={event => setinputMinV3(event.target.value)}/></div>
                   </label>
                 </form>
 
                 <button onClick={transformData}>Preselectie</button>
+                <Modal
+                  isOpen={modalIsOpen}
+                  onRequestClose={closeModal}
+                  style={customStyles}
+                >
+                  <p>{erorInputNumber}</p>
+                  <button onClick={closeModal}>Close</button>
+                </Modal>
                 <div>{ okVisiblenoDayV3 && <p>Ati introdus {display_inputs}</p>} </div>
               </div>
             </div>

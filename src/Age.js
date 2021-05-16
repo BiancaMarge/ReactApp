@@ -108,7 +108,7 @@ const Age = (props) => {
         setModalData("Ai peste 18 ani");
       }
       setOkVisibleAge(true);
-    } //style={{width:250, height: 80, marginTop:20, marginLeft:150}}
+    } 
   }
 
   function closeModal(){
@@ -123,7 +123,7 @@ const Age = (props) => {
         <div><ReactPlaceholder color="black" ready={true} rows={1} type='text' style={{width:250, height: 80, marginTop:20, marginLeft:150}}> 
           <p> {printNullData1}</p>
         </ReactPlaceholder>
-        </div> : <p> {printAge}</p>}
+        </div> : <p>{printAge}</p> }
       </div>
       <div className="btnStyle">
         <button onClick={handlerClick}>Ai peste 18 ani?</button>

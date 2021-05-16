@@ -15,6 +15,8 @@ const Age = (props) => {
   var printYear, printMonth, printDay;
 
   const Varsta = () => {
+    if(data!=null){
+
     var afisVarsta=" ";
     var new_Date=new Date();
     new_Date.setMilliseconds(0);
@@ -73,6 +75,7 @@ const Age = (props) => {
     setPrintAge(afisVarsta);
     setOkVisibleAge(true);
   }
+}
 
 
   //Modal
@@ -102,6 +105,7 @@ const Age = (props) => {
       else{
         setModalData("Ai peste 18 ani");
       }
+      setOkVisibleAge(true);
     }
   }
 
@@ -114,8 +118,8 @@ const Age = (props) => {
       <div >
         <button onClick={Varsta}>Varsta</button>
         {okVisibleAge===false ?
-        <div><ReactPlaceholder rows={1} color="white" type='text' style={{width:250, height: 80, marginTop:20, marginLeft:150}}>
-          <p style="color:gray"> Apasati butonul varsta de mai sus pentru a va afla varsta</p>
+        <div><ReactPlaceholder rows={1} type='text' style={{width:250, height: 80, marginTop:20, marginLeft:150}}>
+          <p style="color:black"> Apasati butonul varsta de mai sus pentru a va afla varsta</p>
         </ReactPlaceholder>
         </div> : <p> {printAge}</p>}
       </div>

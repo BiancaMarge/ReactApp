@@ -21,9 +21,10 @@ function App() {
   var[dateFormat, setdateFormat]=useState("dd-MM-yyyy HH:mm");
 
   const UnixTimeStampFunc = () => {
+    if(selectedDate1!=null){
 
-    const utcDate =selectedDate1.getUTCFullYear()+ "/"+selectedDate1.getUTCMonth()+ "/"+selectedDate1.getUTCDate()+ " "+ selectedDate1.getUTCHours()+ ":"+selectedDate1.getUTCMinutes()+ ":"+selectedDate1.getUTCSeconds();
-    const utcDate2 =new Date(selectedDate1.getUTCFullYear(),selectedDate1.getUTCMonth(),selectedDate1.getUTCDate(), selectedDate1.getUTCHours(),selectedDate1.getUTCMinutes(),selectedDate1.getUTCSeconds());
+    const utcDate =selectedDate1.getUTCFullYear()+ "/"+parseInt(selectedDate1.getUTCMonth()+1)+ "/"+selectedDate1.getUTCDate()+ " "+ selectedDate1.getUTCHours()+ ":"+selectedDate1.getUTCMinutes()+ ":"+selectedDate1.getUTCSeconds();
+    const utcDate2 =new Date(selectedDate1.getUTCFullYear(),selectedDate1.getUTCMonth()+1,selectedDate1.getUTCDate(), selectedDate1.getUTCHours(),selectedDate1.getUTCMinutes(),selectedDate1.getUTCSeconds());
     setdataUTC(utcDate);
     
     setunixtimestamp(utcDate2.getTime());
@@ -45,6 +46,7 @@ function App() {
       setdataRo(formattedDateRo);
 
     setOkVisibleUTSFunc(true);
+    }
   }
 
   const ChangeLocal = ()=>{
@@ -68,62 +70,88 @@ function App() {
   }
 
   const[okVisiblenoDayV3, setOkVisiblenoDayV3]=useState(false);
-  const [inputDayNoV3, setinputDayNoV3] = useState();
-  const [inputHoursNoV3, setinputHourV3] = useState();
-  const [inputMinNoV3, setinputMinV3] = useState();
+  const [inputDayNoV3, setinputDayNoV3] = useState("");
+  const [inputHoursNoV3, setinputHourV3] = useState("");
+  const [inputMinNoV3, setinputMinV3] = useState("");
   const [display_inputs, setDisplay_inputs]=useState();
 
   var printMinute="minut", printHour="ora", printDay="zi";
 
   function transformData(){
-    var sD = new String(inputDayNoV3);
-    var sH = new String(inputHoursNoV3);
-    var sM = new String(inputMinNoV3);
-        if(inputDayNoV3<0 || inputHoursNoV3<0 || inputMinNoV3<0){
-        window.alert("Trebuie sa introduci o valoare pozitiva")
+    var ok=0;
+    if(inputDayNoV3===null){
+      setinputDayNoV3(0);
     }else{
-        if(!inputDayNoV3 || !inputHoursNoV3 || !inputMinNoV3){
-            window.alert("Trebuie sa introduci o valoare")
-        }else{
-            if(sD.charAt(0)==="0" || sH.charAt(0)==="0" || sM.charAt(0)==="0"){
+      var sD = new String(inputDayNoV3);
+    }
+    if(inputHoursNoV3===null){
+      setinputHourV3(0);
+    }else{
+      var sH = new String(inputHoursNoV3);
+    }
+    if(inputMinNoV3===null){
+      setinputMinV3(0);
+    }else{
+      var sM = new String(inputMinNoV3);
+    }
+    if(inputDayNoV3<0 || inputHoursNoV3<0 || inputMinNoV3<0){
+        window.alert("Trebuie sa introduci o valoare pozitiva")
+        ok++;
+    }else{
+      if((sD.charAt(0)==="0" && toString(sD).length>1) || (sH.charAt(0)==="0" && toString(sH).length>1) || (sM.charAt(0)==="0" && toString(sM).length>1)){
                 window.alert("Numarul nu trebuie sa inceapa cu 0");
-            }else{
-              var xD = Number(inputDayNoV3);
-              var xH = Number(inputHoursNoV3);
-              var xM = Number(inputMinNoV3);
-              if(!Number.isInteger(xD) || !Number.isInteger(xH) || !Number.isInteger(xM)){
-                window.alert("Trebuie sa introduci un numar natural");
-              }else{
-                setOkVisiblenoDayV3(true)
-              }
-            }
+                ok++;
+      }else{
+        var xD = Number(sD);
+        var xH = Number(sH);
+        var xM = Number(sM);
+        console.log(xH);
+        if((!Number.isInteger(xD) && xD!==0) || (!Number.isInteger(xH) && xH!==0)|| (!Number.isInteger(xM) && xM!==0)){
+          window.alert("Trebuie sa introduci un numar natural");
+          ok++;
+        }else{
+            setOkVisiblenoDayV3(true)
+            ok=0;
           }
-        }
+      }
+    }
 
-        if(xM===1){
-          printMinute="minut";
-        }else{
-          printMinute="minute";
-        }
+    if(xM===1){
+      printMinute="minut";
+    }else{
+      printMinute="minute";
+    }
     
-        if(xH===1){
-          printHour="ora";
-        }else{
-          printHour="ore";
-        }
+    if(xH===1){
+      printHour="ora";
+    }else{
+      printHour="ore";
+    }
     
-        if(xD===1){
-          printDay="zi";
-        }else{
-          printDay="zile";
-        }
-        setDisplay_inputs(inputDayNoV3+" "+printDay+" "+inputHoursNoV3+" "+printHour +" "+inputMinNoV3 +" "+printMinute);
-       
+    if(xD===1){
+      printDay="zi";
+    }else{
+      printDay="zile";
+    }
+
+    if(xD===0){
+      printDay="";
+    }
+    if(xH===0){
+      printHour="";
+    }
+    if(xM===0){
+      printMinute="";
+    }
+
+    if(ok==0){
+      setDisplay_inputs(inputDayNoV3+" "+printDay+" "+inputHoursNoV3+" "+printHour +" "+inputMinNoV3 +" "+printMinute);
       var auxDate1=selectedDate1.getTime();
       var auxinputDayNoV3=inputDayNoV3*86400000+inputHoursNoV3*3600000+inputMinNoV3*60000;
       var auxDate2=auxDate1+auxinputDayNoV3;
       var newDate=new Date(auxDate2);
       setSelectedDate2(newDate);
+    }
   }
 
 

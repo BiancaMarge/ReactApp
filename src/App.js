@@ -99,83 +99,88 @@ function App() {
   var printMinute="minut", printHour="ora", printDay="zi";
 
   function transformData(){
-    var ok=0;
-    if(inputDayNoV3===null){
-      setinputDayNoV3(0);
-    }else{
-      var sD = new String(inputDayNoV3);
-    }
-    if(inputHoursNoV3===null){
-      setinputHourV3(0);
-    }else{
-      var sH = new String(inputHoursNoV3);
-    }
-    if(inputMinNoV3===null){
-      setinputMinV3(0);
-    }else{
-      var sM = new String(inputMinNoV3);
-    }
-    if(inputDayNoV3<0 || inputHoursNoV3<0 || inputMinNoV3<0){
-      setErorInputNumber("Trebuie sa introduci o valoare pozitiva");
-      setIsOpen(true);
-        ok++;
-    }else{
-      if((sD.charAt(0)==="0" && toString(sD).length>1) || (sH.charAt(0)==="0" && toString(sH).length>1) || (sM.charAt(0)==="0" && toString(sM).length>1)){
-        setErorInputNumber("Numarul nu trebuie sa inceapa cu 0");
+    if(selectedDate1!=null){
+      var ok=0;
+      if(inputDayNoV3===null){
+        setinputDayNoV3(0);
+      }else{
+        var sD = new String(inputDayNoV3);
+      }
+      if(inputHoursNoV3===null){
+        setinputHourV3(0);
+      }else{
+        var sH = new String(inputHoursNoV3);
+      }
+      if(inputMinNoV3===null){
+        setinputMinV3(0);
+      }else{
+        var sM = new String(inputMinNoV3);
+      }
+      if(inputDayNoV3<0 || inputHoursNoV3<0 || inputMinNoV3<0){
+        setErorInputNumber("Trebuie sa introduci o valoare pozitiva");
         setIsOpen(true);
           ok++;
       }else{
-        var xD = Number(sD);
-        var xH = Number(sH);
-        var xM = Number(sM);
-        console.log(xH);
-        if((!Number.isInteger(xD) && xD!==0) || (!Number.isInteger(xH) && xH!==0)|| (!Number.isInteger(xM) && xM!==0)){
-          setErorInputNumber("Trebuie sa introduci un numar natural");
+        if((sD.charAt(0)==="0" && toString(sD).length>1) || (sH.charAt(0)==="0" && toString(sH).length>1) || (sM.charAt(0)==="0" && toString(sM).length>1)){
+          setErorInputNumber("Numarul nu trebuie sa inceapa cu 0");
           setIsOpen(true);
-          ok++;
+            ok++;
         }else{
-            setOkVisiblenoDayV3(true)
-            setErorInputNumber(" ");
-            ok=0;
-          }
+          var xD = Number(sD);
+          var xH = Number(sH);
+          var xM = Number(sM);
+          console.log(xH);
+          if((!Number.isInteger(xD) && xD!==0) || (!Number.isInteger(xH) && xH!==0)|| (!Number.isInteger(xM) && xM!==0)){
+            setErorInputNumber("Trebuie sa introduci un numar natural");
+            setIsOpen(true);
+            ok++;
+          }else{
+              setOkVisiblenoDayV3(true)
+              setErorInputNumber(" ");
+              ok=0;
+            }
+        }
       }
-    }
 
-    if(xM===1){
-      printMinute="minut";
-    }else{
-      printMinute="minute";
-    }
-    
-    if(xH===1){
-      printHour="ora";
-    }else{
-      printHour="ore";
-    }
-    
-    if(xD===1){
-      printDay="zi";
-    }else{
-      printDay="zile";
-    }
+      if(xM===1){
+        printMinute="minut";
+      }else{
+        printMinute="minute";
+      }
+      
+      if(xH===1){
+        printHour="ora";
+      }else{
+        printHour="ore";
+      }
+      
+      if(xD===1){
+        printDay="zi";
+      }else{
+        printDay="zile";
+      }
 
-    if(xD===0){
-      printDay="";
-    }
-    if(xH===0){
-      printHour="";
-    }
-    if(xM===0){
-      printMinute="";
-    }
+      if(xD===0){
+        printDay="";
+      }
+      if(xH===0){
+        printHour="";
+      }
+      if(xM===0){
+        printMinute="";
+      }
 
-    if(ok===0){
-      setDisplay_inputs(inputDayNoV3+" "+printDay+" "+inputHoursNoV3+" "+printHour +" "+inputMinNoV3 +" "+printMinute);
-      var auxDate1=selectedDate1.getTime();
-      var auxinputDayNoV3=inputDayNoV3*86400000+inputHoursNoV3*3600000+inputMinNoV3*60000;
-      var auxDate2=auxDate1+auxinputDayNoV3;
-      var newDate=new Date(auxDate2);
-      setSelectedDate2(newDate);
+      if(ok===0){
+        setDisplay_inputs(inputDayNoV3+" "+printDay+" "+inputHoursNoV3+" "+printHour +" "+inputMinNoV3 +" "+printMinute);
+        var auxDate1=selectedDate1.getTime();
+        var auxinputDayNoV3=inputDayNoV3*86400000+inputHoursNoV3*3600000+inputMinNoV3*60000;
+        var auxDate2=auxDate1+auxinputDayNoV3;
+        var newDate=new Date(auxDate2);
+        setSelectedDate2(newDate);
+      }
+    }else{
+      setErorInputNumber("Va rog sa selectati o data in primul camp");
+      setIsOpen(true);
     }
   }
 
